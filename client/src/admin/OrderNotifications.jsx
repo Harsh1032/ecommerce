@@ -21,7 +21,7 @@ const OrderNotifications = () => {
     fetchOrders();
 
     // Connect to the server for real-time updates
-    socketRef.current = io("http://localhost:8000");
+    socketRef.current = io(`${baseUrl}`);
 
     // Listen for new orders
     socketRef.current.on("newOrder", (order) => {
