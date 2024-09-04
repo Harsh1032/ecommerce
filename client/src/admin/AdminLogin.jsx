@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,7 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   console.log(baseUrl);
@@ -23,6 +25,7 @@ const AdminLogin = () => {
       // Store the JWT token in localStorage or a state management solution
       localStorage.setItem("token", response.data.token);
       setError("");
+      login();
       // Redirect or show a success message
       navigate("/adminHome");
     } catch (err) {
