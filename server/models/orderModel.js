@@ -13,7 +13,8 @@ const orderSchema = new mongoose.Schema({
       quantity: { type: Number, required: true },
     },
   ],
-  totalBill: { type: Number, required: true }
+  totalBill: { type: Number, required: true },
+  isCompleted: { type: Boolean, default: false },
 }, { timestamps: true });
 
 const Order = mongoose.model('Order', orderSchema);

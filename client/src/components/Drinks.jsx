@@ -1,23 +1,49 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CartLogo from "../assets/cart.png";
-import TeaLogo from "../assets/tea.jpeg";
-import CoffeeLogo from "../assets/coffee.jpg";
-import WaterLogo from "../assets/water.jpeg";
 import { Link } from "react-router-dom";
 import { IoIosAdd } from "react-icons/io";
 import { useCart } from "./CartContext";
 import axios from "axios";
+import io from "socket.io-client"; // Import socket.io-client
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Drinks = () => {
-
   const { addToCart, cart } = useCart();
   const [menuItems, setMenuItems] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
+    // Fetch the initial snacks
     fetchMenuItems();
+
+    // Connect to the socket server
+    const socket = io(baseUrl);
+
+    // Listen for the 'newSnack' event and update the snack list
+    socket.on("drinkDoc", (drinkDoc) => {
+      setMenuItems((prevItems) => [...prevItems, drinkDoc]);
+      toast.success("A new drink has been added!");
+    });
+
+    // Listen for the 'updateSnack' event and update the snack list
+    socket.on("updatedDrink", (updatedDrink) => {
+      setMenuItems((prevItems) => {
+        return prevItems.map((item) =>
+          item._id === updatedDrink._id ? updatedDrink : item
+        );
+      });
+      toast.info("A drink has been updated!");
+    });
+
+    // Listen for the 'deleteSnack' event and remove the snack from the list
+    socket.on("deleteDrink", ({ id }) => {
+      setMenuItems((prevItems) => prevItems.filter((item) => item._id !== id));
+      toast.error("A drink has been deleted!");
+    });
+
+    // Clean up the socket connection on component unmount
+    return () => socket.disconnect();
   }, []);
 
   const fetchMenuItems = async () => {
@@ -44,26 +70,28 @@ const Drinks = () => {
       <div className="mx-auto flex justify-center items-center ">
         <h2 className="text-2xl font-bold ">Drinks</h2>
       </div>
-      <div className="flex xs:flex-col md:flex-row xs:h-auto py-5 my-2 w-full  xs:overflow-y-scroll xs:no-scrollbar md:overflow-y-hidden">
-        {menuItems?.map(menuItem => (
-           <div className="flex flex-col items-center xs:w-[90%] md:w-[300px] h-auto mx-auto my-2">
-           <div className="flex flex-col items-center py-2 w-full h-[330px] bg-white border rounded-lg shadow-lg">
-             <h3 className="text-3xl font-bold my-2 ">{menuItem.name}</h3>
-             <img
-               src={`${baseUrl}${menuItem.image}`}
-               className="w-[90%] h-[65%] rounded-lg"
-               alt="house keeping"
-             />
-             <h3 className="text-3xl font-bold my-2 ">${menuItem.price}</h3>
-           </div>{" "}
-           <button 
+      <div className="xs:flex xs:flex-col md:grid md:grid-cols-3 md:gap-4 xs:h-auto py-5 my-2 w-full  xs:overflow-y-scroll xs:no-scrollbar md:overflow-y-hidden">
+        {menuItems?.map((menuItem) => (
+          <div className="flex flex-col items-center xs:w-[90%] md:w-[300px] h-auto mx-auto my-2">
+            <div className="flex flex-col items-center py-2 w-full h-[330px] bg-white border rounded-lg shadow-lg">
+              <h3 className="text-3xl font-bold my-2 ">{menuItem.name}</h3>
+              <img
+                src={`${baseUrl}${menuItem.image}`}
+                className="w-[90%] h-[65%] rounded-lg"
+                alt="house keeping"
+              />
+              <h3 className="text-3xl font-bold my-2 ">${menuItem.price}</h3>
+            </div>{" "}
+            <button
               className="flex items-center justify-center mt-4 p-2 w-auto bg-blue-500 rounded-lg shadow-lg hover:bg-opacity-80 "
               onClick={() => handleAddToCart(menuItem)}
             >
-             <IoIosAdd color={"white"} size={30} />
-             <span className="text-3xl font-medium text-white">Add to cart</span>
-           </button>
-         </div>
+              <IoIosAdd color={"white"} size={30} />
+              <span className="text-3xl font-medium text-white">
+                Add to cart
+              </span>
+            </button>
+          </div>
         ))}
       </div>
       <div className="h-[80px] w-full flex ">

@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: 'https://glittering-kheer-3db923.netlify.app', // Adjust this if your frontend runs on a different URL
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
   allowedHeaders: ['Content-Type'],
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };

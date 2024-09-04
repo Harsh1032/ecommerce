@@ -11,6 +11,7 @@ const CreateServices = () => {
     const [menuItems, setMenuItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false); // Add loading state
   
     // Use a ref to control the file input
     const fileInputRef = useRef(null);
@@ -48,6 +49,7 @@ const CreateServices = () => {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setLoading(true); // Start loading
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
@@ -79,6 +81,8 @@ const CreateServices = () => {
         }
       } catch (error) {
         console.error("Error creating menu item:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
   
@@ -234,7 +238,7 @@ const CreateServices = () => {
                   type="submit"
                   className="md:w-[80%] xs:w-full xs:h-[50px] px-5 text-white font-normal text-xl mt-4 p-2 bg-blue-500 rounded-lg shadow-lg hover:bg-opacity-80"
                 >
-                  Create Service Item
+                  {loading ? "Creating..." : "Create Service Item"}{" "}
                 </button>
               </div>
             </form>

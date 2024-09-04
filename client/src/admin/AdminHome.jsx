@@ -41,7 +41,7 @@ const AdminHome = () => {
   }, [isOpen]);
 
   return (
-    <div className="flex md:flex-row h-screen overflow-hidden xs:flex-col">
+    <div className="flex md:flex-row h-screen overflow-hidden xs:flex-col ">
       {/* Sidebar */}
       <div
         ref={sidebarRef}

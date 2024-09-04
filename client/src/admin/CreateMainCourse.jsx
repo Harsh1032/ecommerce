@@ -11,6 +11,7 @@ const CreateMainCourse = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   // Use a ref to control the file input
   const fileInputRef = useRef(null);
@@ -23,7 +24,6 @@ const CreateMainCourse = () => {
   useEffect(() => {
     fetchMenuItems();
   }, []);
-
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -48,6 +48,7 @@ const CreateMainCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
@@ -66,7 +67,7 @@ const CreateMainCourse = () => {
         }
       );
       console.log("Menu item created:", response.data);
-      
+
       fetchMenuItems();
       // Clear the form fields after successful submission
       setName("");
@@ -79,6 +80,8 @@ const CreateMainCourse = () => {
       }
     } catch (error) {
       console.error("Error creating menu item:", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -234,63 +237,63 @@ const CreateMainCourse = () => {
                 type="submit"
                 className="md:w-[80%] xs:w-full xs:h-[50px] px-5 text-white font-normal text-xl mt-4 p-2 bg-blue-500 rounded-lg shadow-lg hover:bg-opacity-80"
               >
-                Create Main Course Item
+                {loading ? "Creating..." : "Create Main Course Item"}{" "}
               </button>
             </div>
           </form>
         )}
         {activeItem === "Update Items" && (
           <div className="w-full h-full mt-5 xs:w-[90%]">
-          <h2 className="text-xl mb-4">Select an item to update</h2>
-          <ul>
-            {menuItems.map((item) => (
-              <li
-                key={item._id}
-                className="flex justify-between items-center bg-white p-2 rounded-lg mb-2"
-              >
-                <img
-                  src={`${baseUrl}${item.image}`}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                <span className="text-black text-xl">{item.name}</span>
-                <button
-                  className="bg-blue-500 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-opacity-80"
-                  onClick={() => handleSelectItem(item)}
+            <h2 className="text-xl mb-4">Select an item to update</h2>
+            <ul>
+              {menuItems.map((item) => (
+                <li
+                  key={item._id}
+                  className="flex justify-between items-center bg-white p-2 rounded-lg mb-2"
                 >
-                  Update
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  <img
+                    src={`${baseUrl}${item.image}`}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                  <span className="text-black text-xl">{item.name}</span>
+                  <button
+                    className="bg-blue-500 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-opacity-80"
+                    onClick={() => handleSelectItem(item)}
+                  >
+                    Update
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
-         {activeItem === "Delete Items" && (
-        <div className="w-full h-full mt-5 xs:w-[90%]">
-          <h2 className="text-xl mb-4">Select an item to delete</h2>
-          <ul>
-            {menuItems.map((item) => (
-              <li
-                key={item._id}
-                className="flex justify-between items-center bg-white p-2 rounded-lg mb-2"
-              >
-                <img
-                  src={`${baseUrl}${item.image}`}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                <span className="text-black text-xl">{item.name}</span>
-                <button
-                  className="bg-red-500 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-opacity-80"
-                  onClick={() => handleDeleteItem(item._id)}
+        {activeItem === "Delete Items" && (
+          <div className="w-full h-full mt-5 xs:w-[90%]">
+            <h2 className="text-xl mb-4">Select an item to delete</h2>
+            <ul>
+              {menuItems.map((item) => (
+                <li
+                  key={item._id}
+                  className="flex justify-between items-center bg-white p-2 rounded-lg mb-2"
                 >
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+                  <img
+                    src={`${baseUrl}${item.image}`}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                  <span className="text-black text-xl">{item.name}</span>
+                  <button
+                    className="bg-red-500 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-opacity-80"
+                    onClick={() => handleDeleteItem(item._id)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Modal */}

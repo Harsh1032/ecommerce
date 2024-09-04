@@ -31,6 +31,10 @@ const createDrink= async (req, res) => {
         price,
       });
 
+      
+      // Emit the new snack to all connected clients
+      req.app.get('io').emit('drinkDoc', drinkDoc);
+
       res.status(201).json(drinkDoc);
     } catch (error) {
       res.status(500).json({ message: "Server error", error });
@@ -64,6 +68,10 @@ const updateDrink= async (req, res) => {
       // Save the updated menu item
       const updatedDrink= await drink.save();
 
+      
+      // Emit updated snack event
+      req.app.get('io').emit('updatedDrink', updatedDrink);
+
       res.status(200).json(updatedDrink);
     } catch (error) {
       res.status(500).json({ message: "Server error", error });
@@ -80,6 +88,10 @@ const deleteDrink= async (req, res) => {
     if (!drink) {
       return res.status(404).json({ message: "Menu item not found" });
     }
+
+    
+    // Emit deleted snack event
+    req.app.get('io').emit('deleteDrink', { id });
 
     res.status(200).json({ message: "Menu item deleted successfully" });
   } catch (error) {

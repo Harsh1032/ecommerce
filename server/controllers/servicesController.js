@@ -31,6 +31,10 @@ const createService= async (req, res) => {
         price,
       });
 
+      
+      // Emit the new snack to all connected clients
+      req.app.get('io').emit('serviceDoc', serviceDoc);
+
       res.status(201).json(serviceDoc);
     } catch (error) {
       res.status(500).json({ message: "Server error", error });
@@ -64,6 +68,10 @@ const updateService= async (req, res) => {
       // Save the updated menu item
       const updatedService= await service.save();
 
+      
+      // Emit updated snack event
+      req.app.get('io').emit('updatedService', updatedService);
+
       res.status(200).json(updatedService);
     } catch (error) {
       res.status(500).json({ message: "Server error", error });
@@ -80,6 +88,10 @@ const deleteService= async (req, res) => {
     if (!service) {
       return res.status(404).json({ message: "Menu item not found" });
     }
+
+    
+    // Emit deleted snack event
+    req.app.get('io').emit('deleteService', { id });
 
     res.status(200).json({ message: "Menu item deleted successfully" });
   } catch (error) {

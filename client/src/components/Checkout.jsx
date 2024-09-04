@@ -56,6 +56,12 @@ const Checkout = () => {
   
       // Clear the cart after successful submission
       clearCart();
+
+      setName("");
+      setPhoneNumber("");
+      setRoomNumber("");
+      setDate(null);
+      setNotes("");
     } catch (error) {
       console.error("Error submitting order:", error);
       toast.error("Failed to submit order.");
@@ -119,39 +125,6 @@ const Checkout = () => {
         <div className="flex flex-col p-5 xs:w-[90%] md:w-[500px] xs:h-auto bg-white border rounded-lg shadow-lg mx-auto my-2">
           <h3 className="text-3xl font-bold my-2">Order Summary</h3>
           <div className="flex flex-col">
-            {/* <div className="flex w-full justify-between">
-              <span className="text-xl font-normal my-2 w-1/2">Snickers</span>
-              <span className="text-xl font-normal my-2 w-1/4 text-center">
-                x1
-              </span>
-              <span className="text-xl font-normal my-2 w-1/4 text-right">
-                $2
-              </span>
-            </div>
-            <div className="flex w-full justify-between">
-              <span className="text-xl font-normal my-2 w-1/2">Bounty</span>
-              <span className="text-xl font-normal my-2 w-1/4 text-center">
-                x2
-              </span>
-              <span className="text-xl font-normal my-2 w-1/4 text-right">
-                $8
-              </span>
-            </div>
-            <div className="flex w-full justify-between">
-              <span className="text-xl font-normal my-2 w-1/2">Tour</span>
-              <span className="text-xl font-normal my-2 w-1/4 text-center">
-                x1
-              </span>
-              <span className="text-xl font-normal my-2 w-1/4 text-right">
-                $60
-              </span>
-            </div>
-            <div className="flex w-full justify-between">
-              <h3 className="text-xl font-medium my-2 w-3/4">Total:</h3>
-              <span className="text-xl font-normal my-2 w-1/4 text-right">
-                $70
-              </span>
-            </div> */}
             {cart?.map((item, index) => (
               <div className="flex w-full justify-between">
                 <span className="text-xl font-normal my-2 w-1/2">
@@ -173,7 +146,7 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-        <div className="mx-auto flex justify-center items-center my-3 ">
+        {/* <div className="mx-auto flex justify-center items-center my-3 ">
           <h2 className="text-4xl font-bold ">Often Bought With</h2>
         </div>
         <div className="flex xs:flex-col md:flex-row h-auto py-5 my-2 w-full">
@@ -228,7 +201,7 @@ const Checkout = () => {
               </span>
             </button>
           </div>
-        </div>
+        </div> */}
         <form className="flex flex-col p-5 xs:w-[90%] md:w-[500px] xs:h-auto bg-white border rounded-lg shadow-lg mx-auto my-2">
           <h2 className="text-3xl font-bold my-2 ">Enter Your Details</h2>
           <label className="text-xl font-medium my-2">Name:*</label>
