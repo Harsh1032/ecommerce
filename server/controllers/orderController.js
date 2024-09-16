@@ -1,4 +1,31 @@
 const Order = require('../models/orderModel');
+const axios = require('axios');
+
+// Function to send a Telegram message
+const sendTelegramMessage = async (chatId, message) => {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN; // Your bot token stored in environment variables
+  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  console.log(chatId);
+  try {
+    await axios.post(url, {
+      chat_id: chatId, // The admin or group chat ID
+      text: message,
+    });
+    console.log('Order notification sent to Telegram');
+  } catch (error) {
+    console.error('Error sending message to Telegram', error);
+  }
+};
+
+
+// Example usage: Sending order notification to Telegram
+const notifyOrder = async (order) => {
+  const chatId = process.env.TELEGRAM_CHAT_ID; // Store your chat ID in the environment variable
+  console.log(chatId);
+  const message = `New Order Received!\n\nOrder ID: ${order._id}\nCustomer: ${order.name}\nItems: ${order.items.join(', ')}\nTotal Bill: $${order.totalBill}\nRoom: ${order.roomNumber}`;
+  
+  await sendTelegramMessage(chatId, message);
+};
 
 const submitOrder = async (req, res) => {
   try {
@@ -19,6 +46,9 @@ const submitOrder = async (req, res) => {
 
     // Emit the new order to all connected clients
     req.app.get('io').emit('newOrder', newOrder);
+
+    // Send Telegram notification
+    await notifyOrder(newOrder);
 
     res.status(201).json({ message: 'Order submitted successfully!' });
   } catch (error) {
