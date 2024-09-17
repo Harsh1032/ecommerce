@@ -103,7 +103,7 @@ const OrderNotifications = () => {
               Items:{" "}
               {order.items.map((item) => (
                 <span key={item.name}>
-                  {item.quantity}x {item.name} (${item.price}),{" "}
+                  {item.quantity}x {item.name} (JOD{item.price}),{" "}
                 </span>
               ))}
             </p>

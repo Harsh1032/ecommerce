@@ -28,7 +28,7 @@ const UpdateItemModal = ({
               className="w-full h-[50px] px-5 rounded-lg shadow-lg outline-none"
             />
             <div className="w-full h-[50px] px-5 rounded-lg shadow-lg bg-white flex items-center">
-              <span className="bg-white text-black text-xl">$</span>
+              <span className="bg-white text-black text-xl">JOD</span>
               <input
                 type="number"
                 value={price}

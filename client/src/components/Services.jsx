@@ -80,7 +80,7 @@ const Services = () => {
                 className="w-[90%] h-[65%] rounded-lg"
                 alt="house keeping"
               />
-              <h3 className="text-3xl font-bold my-2 ">${menuItem.price}</h3>
+              <h3 className="text-3xl font-bold my-2 ">JOD{menuItem.price}</h3>
             </div>{" "}
             <button
               className="flex items-center justify-center mt-4 p-2 w-auto bg-blue-500 rounded-lg shadow-lg hover:bg-opacity-80 "

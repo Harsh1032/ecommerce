@@ -19,7 +19,7 @@ const app = express();
 const server = http.createServer(app);
 
 const corsOptions = {
-  origin: 'https://glittering-kheer-3db923.netlify.app',  //http://localhost:3000
+  origin: 'http://localhost:3000',   //https://glittering-kheer-3db923.netlify.app
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
   allowedHeaders: ['Content-Type'],
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)

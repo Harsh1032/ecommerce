@@ -134,14 +134,14 @@ const Checkout = () => {
                 x{item.quantity} {/* Display the quantity */}
                 </span>
                 <span className="text-xl font-normal my-2 w-1/4 text-right">
-                  ${item.price}
+                  JOD{item.price}
                 </span>
               </div>
             ))}
             <div className="flex w-full justify-between">
               <h3 className="text-xl font-medium my-2 w-3/4">Total:</h3>
               <span className="text-xl font-normal my-2 w-1/4 text-right">
-                ${totalBill}
+                JOD{totalBill}
               </span>
             </div>
           </div>
